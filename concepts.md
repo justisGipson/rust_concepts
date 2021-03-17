@@ -154,4 +154,66 @@ let spaces = spaces.len();
 ```
 <br>
 
+This construct is allowed because the first `spaces` variable is a string type and the second `spaces` variable, which is a brand-new variable that happens to have the same name as the first one, is a number type. Shadowing thus spares us from having to come up wth different names, such as `spaces_str` and `spaces_num`; instead, we can reuse the simpler `spaces` name. However, if we try to use `mut` for this, as shown here, we'll get a compile-time error:
+
+<br>
+
+```rust
+let mut spaces = "   ";
+
+spaces = spaces.len()
+```
+<br>
+
+The error says we're not allowed to mutate a variable's type:
+
+<br>
+
+```bash
+error[E0308]: mismatched types
+--> src/main.rs:3:14
+  |
+3 |   spaces = spaces.len();
+  |            ^^^^^^^^^^^^ expected &str, found usize
+  |
+= note: expected type `&str`
+           found type `usize`
+```
+<br>
+
+### Data Types
+
+<br>
+
+Every value in Rust is of a certain data type, which tells Rust what kind of data is being specified so it knows how to work with that data. We'll look at two data type subsets: scalar and compound.
+
+Keep in mind that Rust is a *statically typed* language, which means that it must know the types of all variables at compile time. The compiler can usually infer what type we want based on the value and how we use it. In cases when many types are possible, such as when we converted a `String` to a numeric type using `parse` in the `guessing_game`, we must add a type annotation, like this:
+<br>
+
+```rust
+let guess: u32 = "42".parse().expect("Not a number!");
+```
+<br>
+
+If we don't add the type annotation here, Rust will display the following error, which means the compiler needs more information from us to know which type we want to use:
+<br>
+
+```bash
+error[E0308]: mismatched types
+--> src/main.rs:3:14
+  |
+2 |   let guess = "42".parse().expect("Not a number!")
+  |       ^^^^^
+  |       |
+  |       cannot infer type for `_`
+  |       consider giving `guess` a type
+```
+<br>
+
+You'll see different type annotations for other data types.
+
+<br>
+
+### Scalar Types
+<br>
 
