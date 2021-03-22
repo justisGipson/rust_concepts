@@ -14,14 +14,8 @@ By Default variables are immutable. Rust does this to nudge you to write your co
 When a variable is immutable, once a value is bound to a name, you can't change that value. To illustrate this, generate a new project called [variables](./variables/variables/src/main.rs). Then in the new project, open `src/main.rs` and replace its code with the following code that won't compile just yet:
 <br>
 
-```rust
-fn main() {
-    let x = 5;
-    println!("The value of x is: {}", x);
-    x = 6;
-    println!("The value of x is: {}", x);
-}
-```
+[variable.rs](variable.rs)
+
 <br>
 
 Save and run the program using `cargo run`. You should receive an error message, as shown below:
@@ -57,14 +51,8 @@ But mutability can be very useful. Variables are immutable only by default, you 
 Let's change `src/main.rs` to the following:
 <br>
 
-```rust
-fn main() {
-    let mut x = 5;
-    println!("The value of x is: {}", x);
-    x = 6;
-    println!("The value of x is: {}", x);
-}
-```
+[variable1.rs](variable1.rs)
+
 <br>
 
 When the program is run, we get this:
@@ -99,9 +87,8 @@ The last difference is that constants may be set only to a constant expression, 
 Below is an example of a constant declaration where the constant's name is `MAX_POINTS` and its value is set to 100,000. (Rust's naming convention for constants is to use all uppercase with underscores between words, and underscores can be inserted in numeric literals to improve readability):
 <br>
 
-```rust
-const MAX_POINTS: u32 = 100_000;
-```
+[constant.rs](contant.rs)
+
 <br>
 
 Constants are valid for the entire time a program runs, within the scope they were declared in, making them a useful choice for values in your application domain that multiple parts of the program might need to know about, such as the maximum number of points any player of a game is allowed to earn or the speed of light.
@@ -117,17 +104,8 @@ As shown in the `guessing_game` tutorial, you can declare a new variable with th
 
 <br>
 
-```rust
-fn main() {
-    let x = 5;
+[shadowing.rs](shadowing.rs)
 
-    let x = x + 1;
-
-    let x = x * 2;
-
-    println!("The value of x is: {}", x);
-}
-```
 <br>
 
 This program first binds `x` to a value of 5. Then it shadows `x` b repeating `let x =`, taking the original value and adding 1 so the value of `x` is then 6. The third `let` statement also shadows also shadows `x`, multiplying the previous value by 2 to give `x` a final value of 12. When we run this program, it will output the following:
@@ -148,21 +126,16 @@ The other difference between `mut` and shadowing is that because we're effective
 
 <br>
 
-```rust
-let spaces = "   ";
-let spaces = spaces.len();
-```
+[shadowing1.rs](shadowing1.rs)
+
 <br>
 
 This construct is allowed because the first `spaces` variable is a string type and the second `spaces` variable, which is a brand-new variable that happens to have the same name as the first one, is a number type. Shadowing thus spares us from having to come up wth different names, such as `spaces_str` and `spaces_num`; instead, we can reuse the simpler `spaces` name. However, if we try to use `mut` for this, as shown here, we'll get a compile-time error:
 
 <br>
 
-```rust
-let mut spaces = "   ";
+[shadowing_err.rs](shadowing_err.rs)
 
-spaces = spaces.len()
-```
 <br>
 
 The error says we're not allowed to mutate a variable's type:
