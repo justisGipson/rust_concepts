@@ -397,3 +397,172 @@ fn main() {
 This program creates a tuple, `x`, then makes new variables for each element by using their index. As with most programming languages, the first index in a tuple is 0.
 <br>
 
+### The Array Type
+<br>
+
+Another way to have a collection of multiple values is with an *array*. Unlike a tuple, every element of an array must have the same type. Arrays in Rust are different from arrays in some other languages because arrays in Rust have a fixed length, like tuples.
+
+In Rust, the values going into an array are written as a comma-separated list inside square brackets:
+<br>
+
+```rust
+fn main() {
+  let a = [1, 2, 3, 4, 5];
+}
+```
+<br>
+
+<!-- TODO: Link to understanding ownership here and to 8.1 common collections Vectors-->
+Arrays are useful when you want your data allocated on the stack rather than the heap (more in Understanding Ownership) or when you want to ensure you always have a fixed number of elements. An array isn't as flexible as the vector type, though. A vector is a similar collection type provided by the standard library that *is* allowed to grow or shrink in size. If you're unsure whether to use an array or vector, you should probably use a vector.
+
+An example of when you might to use an array rather than a vector is in a program that needs to know the names of the months of the year. It's very unlikely that such a program will need to add or remove months, so you can use an array because you know it will always contain 12 elements:
+<br>
+
+```rust
+let months = ["January", "February", "March", "April", "May", "June", "July",
+              "August", "September", "October", "November", "December"];
+```
+<br>
+
+You would write an array's type by using square brackets, and within the brackets include the type of each element, a semicolon, and then the number of elements in the array, like so:
+<br>
+
+```rust
+let a: [i32; 5] = [1, 2, 3, 4, 5];
+```
+<br>
+
+Here, `i32` is the type of each element. After the semicolon, the number `5` indicated the array contains five elements.
+
+Writing an array's type this way looks similar to an alternative syntax for initializing an array: if you want to create an array that contains the same value for each element, you can specify the initial value, followed by a semicolon, and then the length of the array in square brackets, like:
+<br>
+
+```rust
+let a = [3; 5];
+```
+<br>
+
+The array named `a` will contain `5` elements that will all be set to the value `3` initially. This is the same as writing:
+<br>
+
+```rust
+let a = [3, 3, 3, 3, 3];
+```
+<br>
+
+But in a more concise way.
+<br>
+
+### Accessing Array Elements
+<br>
+
+An array is a single chunk of memory allocated on the stack. You can access elements of an array using indexing, like this:
+<br>
+
+```rust
+fn main() {
+  let a = [1, 2, 3, 4, 5];
+
+  let first = a[0];
+  let second = a[1];
+}
+```
+<br>
+
+in the example above, the variable named `first` will get the value `1`, because that is the first value at index `[0]` in the array. The variable named `second` will get the value `2` from index `[1]` in the array.
+<br>
+
+### Invalid Array Element Access
+<br>
+
+What happens if you try to access an element of an array that is past the end of the array? Say you change the example to the following, which uses similar code to the guessing game to get an array index from the user:
+<br>
+
+```rust
+use std::io;
+
+fn main() {
+    let a = [1, 2, 3, 4, 5];
+
+    println!("Please enter an array index.");
+
+    let mut index = String::new();
+
+    io::stdin()
+        .read_line(&mut index)
+        .expect("Failed to read line");
+
+    let index: usize = index
+        .trim()
+        .parse()
+        .expect("Index entered was not a number");
+
+    let element = a[index];
+
+    println!(
+        "The value of the element at index {} is: {}",
+        index, element
+    );
+}
+```
+<br>
+
+This code compiles successfully. If you run the code using `cargo run` and enter 0, 1, 2, 3, or 4, the program will print out the corresponding value at that index in the array. If you instead enter a number past the end of the array, such as 10, you'll see output like this:
+<br>
+
+```bash
+thread 'main' panicked at 'index out of bounds: the len is 5 but the index is 10', src/main.rs:19:19
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+```
+<br>
+
+The program resulted in a *suntime* error at the point of using an invalid value in the indexing operation. The program exited at that point with an error message and didn't execute the final `println!`. When you attempt to accedd an element using indexing, Rust will check that the index you've specified is less than the array length. If the index is greater than or equal to the array length, Rust will panic. This check has to happen at runtime, especially in the case, because the compiler can't possible know what the value a user running the code will enter.
+
+This is the first example of Rust's safety principles in action. In many low-level languages, this kind of check is not done, and when you provide an incorrect index, invalid memory can be accessed. Rust protects you against this kind of error by immediately exiting instead of allowing the memory access and continuing. More in error handling.
+<!-- TODO: link to error handling here -->
+<br>
+
+### Functions
+<br>
+
+Functions are pervasive in Rust code. We've already seen one of the most important functions in the language: the `main` function, which is the entry point of many programs. You've also seen the `fn` keyword, which allows you to declare functions.
+
+Rust code uses *snake case* as the conventional style for function and variable names. In snake case, all letters are lowercase and underscores separate words. Here's an example:
+<br>
+
+```rust
+fn main() {
+    println!("Hello, world!");
+
+    another_function();
+}
+
+fn another_function() {
+    println!("Another function.");
+}
+```
+<br>
+
+Function definitions in Rust start with `fn` and have a set of parentheses after the function name. The curly brackets tell the compiler where the function body begins and ends.
+
+We can call any function we’ve defined by entering its name followed by a set of parentheses. Because `another_function` is defined in the program, it can be called from inside the `main` function. Note that we defined `another_function` after the `main` function in the source code; we could have defined it before as well. Rust doesn’t care where you define your functions, only that they’re defined somewhere.
+
+Let’s start a new binary project named functions to explore functions further. Place the another_function example in src/main.rs and run it. You should see the following output:
+<br>
+
+```bash
+$ cargo run
+   Compiling functions v0.1.0 (file:///projects/functions)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.28s
+     Running `target/debug/functions`
+Hello, world!
+Another function.
+```
+<br>
+
+The lines execute in the order in which they appear in the main function. First, the “Hello, world!” message prints, and then another_function is called and its message is printed.
+<br>
+
+### Function Parameters
+<br>
+
