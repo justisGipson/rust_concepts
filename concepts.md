@@ -566,3 +566,29 @@ The lines execute in the order in which they appear in the main function. First,
 ### Function Parameters
 <br>
 
+Functions can also be defined to have _parameters_, which are special variables that are part of a function's signature. When a function has parameters, you can provide it with concrete values for those parameters. Technically, the concrete values are called _arguments_, but in casual conversation, people tend to use the words _parameter_ and _argument_ interchangeably for either the variables in a function's definition or the concrete values passed in when you call a function.
+
+The following rewritten version of `another_function` shows what parameters look like in Rust:
+<br>
+
+```rust
+fn main() {
+  another_function(5);
+}
+
+fn another_function(x: i32) {
+  println!("The value of x is: {}", x);
+}
+```
+<br>
+
+When ran, the following is what the output should be:
+
+```bash
+$ cargo run
+   Compiling functions v0.1.0 (file:///projects/functions)
+    Finished dev [unoptimized + debuginfo] target(s) in 1.21s
+     Running `target/debug/functions`
+The value of x is: 5
+```
+<br>
