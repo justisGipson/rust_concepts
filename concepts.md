@@ -583,7 +583,7 @@ fn another_function(x: i32) {
 <br>
 
 When ran, the following is what the output should be:
-
+<br>
 ```bash
 $ cargo run
    Compiling functions v0.1.0 (file:///projects/functions)
@@ -591,4 +591,43 @@ $ cargo run
      Running `target/debug/functions`
 The value of x is: 5
 ```
+<br>
+
+The declaration of `another_function` has one parameter named `x`. The type of `x` is specified as `i32`. When `5` is passed to `another_function`, the `println!` macro puts `5` where the pair of curly brackets were in the format string.
+
+In function signatures, you *must* declare the type of each parameter. This is a deliberate decision in Rust's design; requiring type annotations in function definitions means the compiler almost never needs you to use them elsewhere in the code to figure out what you mean.
+
+When you want a function to have multiple parameters, separate the parameter declarations with commas, like this:
+
+```rust
+fn main() {
+  another_function(5, 6);
+}
+
+fn another_function(x: i32, y: i32) {
+  println!("The value of x is: {}", x);
+  println!("The value of y is: {}", y);
+}
+```
+<br>
+
+This example creates a function with 2 parameters, both of which are `i32` types. The function then prints the values in both of its parameters. Note that function parameters don't need to be the same type, they just happen to be in this example.
+
+When ran, the following is what the output should be:
+<br>
+
+```bash
+$ cargo run
+   Compiling functions v0.1.0 (file:///projects/functions)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.31s
+     Running `target/debug/functions`
+The value of x is: 5
+The value of y is: 6
+```
+<br>
+
+Because we called the function with `5` as the value for `x` and `6` is passed as the value for `y`, the two strings are printed with these values.
+<br>
+
+### Function Bodies Contain Statements and Expressions
 <br>
