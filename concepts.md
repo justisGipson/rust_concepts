@@ -631,3 +631,130 @@ Because we called the function with `5` as the value for `x` and `6` is passed a
 
 ### Function Bodies Contain Statements and Expressions
 <br>
+
+Function bodies are made up of a series of statements optionally ending in an expression. So far, we've only covered functions without an ending expression, but you have seen an expression as part of a statement. Because Rust is an expression-base language, this is an important distinction to understand. Other languages don't have the same distinctions, so let's look at what statements and expressions are and how their difference affects the bodies of functions.
+
+We've actually already used statements and expressions. *Statements* are instructions that perform some action and do not return a value. *Expressions* evaluate to a resulting value.
+
+Creating a variable and assigning a value to it with the `let` keyword is a statement.
+<br>
+
+```rust
+fn main() {
+  let y = 6;
+}
+```
+<br>
+
+Function definitions are also statements; the entire preceding example is a statement in itself.
+
+Statements to do not return values. Therefore, you can't assign a `let` statement to another variable, as the following code tries to do; you'll get an error:
+<br>
+
+```rust
+fn main() {
+  let x = (let y = 6);
+}
+```
+<br>
+
+When this program runs, the error you'll get look like this:
+<br>
+
+```bash
+$ cargo run
+   Compiling functions v0.1.0 (file:///projects/functions)
+error[E0658]: `let` expressions in this position are experimental
+ --> src/main.rs:2:14
+  |
+2 |     let x = (let y = 6);
+  |              ^^^^^^^^^
+  |
+  = note: see issue #53667 <https://github.com/rust-lang/rust/issues/53667> for more information
+
+error: expected expression, found statement (`let`)
+ --> src/main.rs:2:14
+  |
+2 |     let x = (let y = 6);
+  |              ^^^^^^^^^
+  |
+  = note: variable declaration using `let` is a statement
+
+warning: unnecessary parentheses around assigned value
+ --> src/main.rs:2:13
+  |
+2 |     let x = (let y = 6);
+  |             ^^^^^^^^^^^ help: remove these parentheses
+  |
+  = note: `#[warn(unused_parens)]` on by default
+
+error: aborting due to 2 previous errors; 1 warning emitted
+
+For more information about this error, try `rustc --explain E0658`.
+error: could not compile `functions`
+
+To learn more, run the command again with --verbose.
+```
+<br>
+
+The `let y = 6` statement does not return a value, so there isn't anything for x to bind to. This is different from what happens in other languages, such as C and Ruby, where the assignment returns the value of the assignment. In those languages, you can write `x = y = 6` and have both `x` and `y` have the value `6`; that is not the case in Rust.
+
+Expressions evaluate to something and make up most of the rest of the code that you'll write in Rust. Consider a simple math operation, such as `5 + 6`, which is an expression that evaluates to the value `11`. Expressions can be part of statements. In [Variables and Mutability](#variable-and-mutability) the `6` in the statement `let y = 6;` is an expression that evaluates to the value `6`. Calling a function is an expression. Calling a macro is an expression. The block that we use to create new scopes, `{}`, is an expression, for example:
+<br>
+
+```rust
+fn main() {
+  let x = 5;
+
+  let y = {
+    let x = 3;
+    x + 1
+  };
+
+  println!("The value of y is: {}", y)
+}
+```
+<br>
+
+This expression:
+<br>
+
+```rust
+{
+  let x = 3;
+  x + 1
+}
+```
+is a block that, in this case, evaluates to `4`. That value gets bound to `y` as part of the `let` statement. Note the `x + 1` line without a semicolon at the end, which is unlike most of the lines you've seen so far. Expressions do not include ending semicolons. If you add a semicolon to the end of an expression, you turn it into a statement, which will then not return a value. Keep this in mind as you explore function return values and expressions.
+<br>
+
+### Functions with Return Values
+<br>
+
+Functions can return values to the code that calls them. We don't name return values, but we do declare their type after an arrow (`->`). In Rust, the return value of the functions is synonymous wiht the value of the final expression in the block of the body of a function. You can return early from a function by using the `return` keyword and specifying a value, but most functions return the last expression implicitly. Here's an example of a function that returns a value:
+<br>
+
+```rust
+fn five() -> i32 {
+  5
+}
+
+fn main() {
+  let x = five();
+
+  println!("The value of x is: {}", x);
+}
+```
+<br>
+
+There are no function calls, macros, or even `let` statements in the `five` function – just the numnber `5` by itself. That's a perfectly valid function in Rust. Note that the function's return type is specified too, as `-> i32`. When ran the output should look like this:
+<br>
+
+```bash
+$ cargo run
+   Compiling functions v0.1.0 (file:///projects/functions)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.30s
+     Running `target/debug/functions`
+The value of x is: 5
+```
+<br>
