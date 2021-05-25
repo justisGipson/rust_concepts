@@ -1,3 +1,5 @@
+## Common Programming Concepts
+
 ### Keywords
 <br>
 
@@ -758,3 +760,124 @@ $ cargo run
 The value of x is: 5
 ```
 <br>
+
+The `5` in `five` is the function's return value, which is why the return type is `i32`. Let's examine this in more detail. There are two important bits: first, the line `let x = five();` shows that we're using the return value of a function to initialize a variable. Because the function `five` returns a `5`, that line is the same as the following:
+<br>
+
+```rust
+let x = 5
+```
+<br>
+
+Second, the `five` function have no parameters and defines the type of the return value, but the body of the function is a lonely `5` with no semicolon because it's an expression whose value we want to return.
+
+Another example:
+<br>
+
+```rust
+fn main() {
+  let z = plus_one(x);
+
+  println!("The value of x is: {}", x);
+}
+
+fn plus_one(x: i32) -> i32 {
+  x + 1
+}
+```
+<br>
+
+Running this code will print `The value of x is: 6`. But if we place a semicolon at the end of the line containing `x + 1`, changing it from an expression to a statement, we'll get an error.
+<br>
+
+```rust
+fn main() {
+  let z = plus_one(5);
+
+  println!("The value of x is: {}", x);
+}
+
+fn plus_one(x: i32) -> i32 {
+  x + 1;
+}
+```
+<br>
+
+Compiling this code produces an error, as follows:
+<br>
+
+```bash
+$ cargo run
+   Compiling functions v0.1.0 (file:///projects/functions)
+error[E0308]: mismatched types
+ --> src/main.rs:7:24
+  |
+7 | fn plus_one(x: i32) -> i32 {
+  |    --------            ^^^ expected `i32`, found `()`
+  |    |
+  |    implicitly returns `()` as its body has no tail or `return` expression
+8 |     x + 1;
+  |          - help: consider removing this semicolon
+
+error: aborting due to previous error
+
+For more information about this error, try `rustc --explain E0308`.
+error: could not compile `functions`
+
+To learn more, run the command again with --verbose.
+```
+<br>
+
+The main error message, `mismatched types`, reveals the core issue with this code. The definition of the function `plus_one` says that it will return an `i32`, but statements don't evaluate to a value, which is expressed by `()`, an empty tuple. Therefore, nothing is returned, which contradicts the function definition and results in an error. In this output, Rust provides a message to possibly help rectify this issue: it suggests removing the semicolon, which would fix this error.
+<br>
+
+### Comments
+<br>
+
+All programmers strive to make their code easy to understand, but sometimes extra explanation is warranted. In these cases, programmers leave notes, or _comments_, in their source code that the compiler will ignore but people reading the source may find useful.
+
+Here's a simple comment:
+<br>
+
+```rust
+// hello, world
+```
+<br>
+
+In Rust, the idiomatic comment style starts a comment with two slashes, and the comment continues until the end of the line. For comments that extend beyond a single line, you'll need to include `//` on each line, like this:
+<br>
+
+```rust
+// So we’re doing something complicated here, long enough that we need
+// multiple lines of comments to do it! Whew! Hopefully, this comment will
+// explain what’s going on.
+```
+<br>
+
+Comments can also be placed at the end of lines containing code:
+<br>
+
+```rust
+fn main() {
+    let lucky_number = 7; // I’m feeling lucky today
+}
+```
+<br>
+
+But you’ll more often see them used in this format, with the comment on a separate line above the code it’s annotating:
+<br>
+
+```rust
+fn main() {
+    // I’m feeling lucky today
+    let lucky_number = 7;
+}
+```
+<br>
+
+<!-- TODO: Link right chapter here once done -->
+
+Rust also has another kind of comment, documentation comments, which we’ll discuss in the “Publishing a Crate to Crates.io” section of Chapter 14.**
+<br>
+
+### Control Flow
