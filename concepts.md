@@ -23,7 +23,7 @@ When a variable is immutable, once a value is bound to a name, you can't change 
 Save and run the program using `cargo run`. You should receive an error message, as shown below:
 <br>
 
-```bash
+```console
 error[E0384]: cannot assign twice to immutable variable `x`
  --> src/main.rs:4:5
   |
@@ -59,7 +59,7 @@ Let's change `src/main.rs` to the following:
 
 When the program is run, we get this:
 
-```bash
+```console
   Compiling variables v0.1.0 (/Users/jgipson/Desktop/Dev/rust/concepts/variables/variables)
     Finished dev [unoptimized + debuginfo] target(s) in 0.71s
      Running `target/debug/variables`
@@ -114,7 +114,7 @@ This program first binds `x` to a value of 5. Then it shadows `x` b repeating `l
 
 <br>
 
-```bash
+```console
    Compiling constants v0.1.0 (/Users/jgipson/Desktop/Dev/rust/constants)
     Finished dev [unoptimized + debuginfo] target(s) in 1.30s
      Running `target/debug/constants`
@@ -144,7 +144,7 @@ The error says we're not allowed to mutate a variable's type:
 
 <br>
 
-```bash
+```console
 error[E0308]: mismatched types
 --> src/main.rs:3:14
   |
@@ -173,7 +173,7 @@ let guess: u32 = "42".parse().expect("Not a number!");
 If we don't add the type annotation here, Rust will display the following error, which means the compiler needs more information from us to know which type we want to use:
 <br>
 
-```bash
+```console
 error[E0308]: mismatched types
 --> src/main.rs:3:14
   |
@@ -512,7 +512,7 @@ fn main() {
 This code compiles successfully. If you run the code using `cargo run` and enter 0, 1, 2, 3, or 4, the program will print out the corresponding value at that index in the array. If you instead enter a number past the end of the array, such as 10, you'll see output like this:
 <br>
 
-```bash
+```console
 thread 'main' panicked at 'index out of bounds: the len is 5 but the index is 10', src/main.rs:19:19
 note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
 ```
@@ -552,7 +552,7 @@ We can call any function we’ve defined by entering its name followed by a set 
 Let’s start a new binary project named functions to explore functions further. Place the another_function example in src/main.rs and run it. You should see the following output:
 <br>
 
-```bash
+```console
 $ cargo run
    Compiling functions v0.1.0 (file:///projects/functions)
     Finished dev [unoptimized + debuginfo] target(s) in 0.28s
@@ -586,7 +586,7 @@ fn another_function(x: i32) {
 
 When ran, the following is what the output should be:
 <br>
-```bash
+```console
 $ cargo run
    Compiling functions v0.1.0 (file:///projects/functions)
     Finished dev [unoptimized + debuginfo] target(s) in 1.21s
@@ -618,7 +618,7 @@ This example creates a function with 2 parameters, both of which are `i32` types
 When ran, the following is what the output should be:
 <br>
 
-```bash
+```console
 $ cargo run
    Compiling functions v0.1.0 (file:///projects/functions)
     Finished dev [unoptimized + debuginfo] target(s) in 0.31s
@@ -663,7 +663,7 @@ fn main() {
 When this program runs, the error you'll get look like this:
 <br>
 
-```bash
+```console
 $ cargo run
    Compiling functions v0.1.0 (file:///projects/functions)
 error[E0658]: `let` expressions in this position are experimental
@@ -752,7 +752,7 @@ fn main() {
 There are no function calls, macros, or even `let` statements in the `five` function – just the numnber `5` by itself. That's a perfectly valid function in Rust. Note that the function's return type is specified too, as `-> i32`. When ran the output should look like this:
 <br>
 
-```bash
+```console
 $ cargo run
    Compiling functions v0.1.0 (file:///projects/functions)
     Finished dev [unoptimized + debuginfo] target(s) in 0.30s
@@ -806,7 +806,7 @@ fn plus_one(x: i32) -> i32 {
 Compiling this code produces an error, as follows:
 <br>
 
-```bash
+```console
 $ cargo run
    Compiling functions v0.1.0 (file:///projects/functions)
 error[E0308]: mismatched types
@@ -914,7 +914,7 @@ Optionally, we can also include and `else` expression, which we chose to do here
 When the code is ran, you should see this output:
 <br>
 
-```bash
+```console
 $ cargo run
    Compiling branches v0.1.0 (file:///projects/branches)
     Finished dev [unoptimized + debuginfo] target(s) in 0.31s
@@ -934,7 +934,7 @@ let number = 7;
 Run the program again, and look at the output:
 <br>
 
-```bash
+```console
 $ cargo run
    Compiling branches v0.1.0 (file:///projects/branches)
     Finished dev [unoptimized + debuginfo] target(s) in 0.31s
@@ -976,4 +976,134 @@ error: could not compile `branches`
 
 To learn more, run the command again with --verbose.
 ```
+<br>
+
+The error indicates that Rust expected a `bool` but got an `integer`. Unlike languages such as Ruby and JavaScript, Rust will not automatically try to convert non-Boolean types to a Boolean. You must be explicit and always provide `if` with a Boolean as it's condition. If we want the `if` code block to run only when a number is not equal to `0`, for example, we can change the `if` expression to the following:
+<br>
+
+```rust
+fn main() {
+  let number = 3;
+
+  if number != 0 {
+    println!("number was something other than zero");
+  }
+}
+```
+<br>
+
+Running the code will print `number was something other than zero`.
+<br>
+
+#### Handling Multiple Conditions with `else if`
+<br>
+
+You can have multiple conditions by combining `if` and `else` in and `else if` expression. For example:
+<br>
+
+```rust
+fn main() {
+    let number = 6;
+
+    if number % 4 == 0 {
+        println!("number is divisible by 4");
+    } else if number % 3 == 0 {
+        println!("number is divisible by 3");
+    } else if number % 2 == 0 {
+        println!("number is divisible by 2");
+    } else {
+        println!("number is not divisible by 4, 3, or 2");
+    }
+}
+```
+<br>
+
+This program has four possible paths it can take. After running it, you should see the following output:
+<br>
+
+```console
+$ cargo run
+   Compiling branches v0.1.0 (file:///projects/branches)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.31s
+     Running `target/debug/branches`
+number is divisible by 3
+```
+<br>
+
+When this program executes, it checks each `if` expression in turn and executes the first body for which the condition holds true. Note that even though 6 is divisible by 2, we don't see the output `number is divisible by 2`, nor do we see the `number is not divisible by 4, 3, or 2` text from the else block. That's because Rust only executes the block for the first true condition, and once it finds one, it doesn't even check the rest.
+
+Using too many `else if` expressions can clutter your code, so if you have more that one, you might want to refactor your code. Chapter 6 describes a powerful Rust branching construct called `match` for these cases
+<!-- TODO: Add link here for chapter 6 content -->
+<br>
+
+#### Using `if` in a `let` Statement
+<br>
+
+Because `if` is an expression, we can use it on the right side of a `let` statement.
+<br>
+
+```rust
+fn main() {
+    let condition = true;
+    let number = if condition { 5 } else { 6 };
+
+    println!("The value of number is: {}", number);
+}
+```
+<br>
+
+The `number` variable will be bound to a value based on the outcome of the `if` expression. Run this code to see what happens:
+<br>
+
+```console
+$ cargo run
+   Compiling branches v0.1.0 (file:///projects/branches)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.30s
+     Running `target/debug/branches`
+The value of number is: 5
+```
+<br>
+
+Remember that blocks of code evaluate the last expression in them, and numbers by themselves are also expressions. In this case, the value of the whole `if` expression depends on which block of code executes. This means the values that have the potential to be results from each arm of the `if` must be the same type; In the example above, the results of both the `if` arm and the `else` arm were `i32` integers. If the types are mismatches, as in the following example, we'll get an error:
+<br>
+
+```rust
+fn main() {
+    let condition = true;
+
+    let number = if condition { 5 } else { "six" };
+
+    println!("The value of number is: {}", number);
+}
+```
+<br>
+
+When we try to compile this code, we'll get an error. The `if` and `else` arms have value types that are incompatible, and Rust indicates exactly where to find the problem in the program:
+<br>
+
+```console
+$ cargo run
+   Compiling branches v0.1.0 (file:///projects/branches)
+error[E0308]: `if` and `else` have incompatible types
+ --> src/main.rs:4:44
+  |
+4 |     let number = if condition { 5 } else { "six" };
+  |                                 -          ^^^^^ expected integer, found `&str`
+  |                                 |
+  |                                 expected because of this
+
+error: aborting due to previous error
+
+For more information about this error, try `rustc --explain E0308`.
+error: could not compile `branches`
+
+To learn more, run the command again with --verbose.
+```
+<br>
+
+The expression in the `if` block evaluates to an integer, and the expression in the `else` block evaluates to a string. This won't work because variables must have a single type. Rust needs to know at compile time what type the `number` variable is, definitively, so it can verify at compile time that its type is valid and everywhere we use `number`. Rust wouldn't be able to do that if the type of `number` was only determined at runtime; the compiler would be more complex and would make fewer guarantees about the code if it had to keep track of multiple hypothetical types for any variable.
+<br>
+
+### Repetition with Loops
+<br>
 
