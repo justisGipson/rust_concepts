@@ -889,3 +889,91 @@ Deciding whether or not to run some code depending on if a condition is true and
 ### `if` Expressions
 <br>
 
+An `if` expression allows you to branch your code depending on conditions. You provide a condition and the state "if this condition is met, run this block of code. If the condition is not met, do not run this block of code".
+
+`branches.rs`
+<br>
+
+```rust
+fn main() {
+    let number = 3;
+
+    if number < 5 {
+        println!("condition was true");
+    } else {
+        println!("condition was false");
+    }
+}
+```
+<br>
+
+All `if` expressions start with the keyword `if`, which is followed by a condition. In this case, the condition check whether or not the variable `number` is less than `5`. The block of code we want to execute if the condition is true is placed immediately after the condition inside curly brackets. Blocks of code associated with the conditions in `if` expressions are sometimes called *arms*, just like the arms in `match` that were covered in the [Guessing Game](https://github.com/justisGipson/rs_guessing_game)
+
+Optionally, we can also include and `else` expression, which we chose to do here, to give the program an alternative block of code to execute should the condition evaluate to false. If you don't provide an `else` expression and the condition is false, the program will just skip the `if` block and move on to the next bit of code.
+
+When the code is ran, you should see this output:
+<br>
+
+```bash
+$ cargo run
+   Compiling branches v0.1.0 (file:///projects/branches)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.31s
+     Running `target/debug/branches`
+condition was true
+```
+<br>
+
+Let’s try changing the value of `number` to a value that makes the condition `false` to see what happens:
+<br>
+
+```rust
+let number = 7;
+```
+<br>
+
+Run the program again, and look at the output:
+<br>
+
+```bash
+$ cargo run
+   Compiling branches v0.1.0 (file:///projects/branches)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.31s
+     Running `target/debug/branches`
+condition was false
+```
+<br>
+
+It's also worth noting that the condition in this code *must* be a `bool`. If the condition isn't a `bool`, we'll get an error. For example, try running the following code:
+<br>
+
+```rust
+fn main() {
+  let number = 3;
+
+  if number {
+    println!("number was three");
+  }
+}
+```
+<br>
+
+The `if` condition evaluates to a value of `3` this time, and Rust throws an error:
+<br>
+
+```console
+$ cargo run
+   Compiling branches v0.1.0 (file:///projects/branches)
+error[E0308]: mismatched types
+ --> src/main.rs:4:8
+  |
+4 |     if number {
+  |        ^^^^^^ expected `bool`, found integer
+
+error: aborting due to previous error
+
+For more information about this error, try `rustc --explain E0308`.
+error: could not compile `branches`
+
+To learn more, run the command again with --verbose.
+```
+
